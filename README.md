@@ -1,7 +1,7 @@
 # hemoglobin
-git clone https://github.com/ArioBara/project_kpl.git
+git clone https://github.com/ArioBara/hemoglobin.git
 
-cd project_kpl
+cd hemoglobin
 
 python -m venv .venv
 
