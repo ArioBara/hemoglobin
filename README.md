@@ -1,4 +1,5 @@
 # hemoglobin
+# CARA PAKAI:
 git clone https://github.com/ArioBara/hemoglobin.git
 
 cd hemoglobin
