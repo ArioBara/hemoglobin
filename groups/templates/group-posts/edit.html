@@ -1,0 +1,15 @@
+{% extends "layout.html"%}
+{% load crispy_forms_tags %}
+
+
+{% block body %}
+<div class="container">
+    <h1>Sunting Buku</h1>
+    <form action="{% url " group.edit" data.id %}" method="post">
+        {% csrf_token %}
+        {{ form|crispy}}
+        <button type="submit">Perbarui Postingan</button>
+    </form>
+</div>
+
+{% endblock %}

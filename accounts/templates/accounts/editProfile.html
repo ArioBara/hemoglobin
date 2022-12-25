@@ -1,0 +1,20 @@
+{% extends 'profileLayout.html' %}
+{% block title %} edit {% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="container pt-2 ">
+    <div class="post-topbar">
+        <form method="post" action="{% url  "editProfile" user.id   %}" enctype="multipart/form-data">
+            <table class="table table-bordered table-hover">
+                {% csrf_token %}
+                {{ form|crispy }}
+                {{profile|crispy}}
+                <tr>
+
+                    <td><input class="btn btn-primary" type="submit" name="submit" value="Perbarui" /></td>
+            </table>
+        </form>
+    </div>
+</div>
+{% endblock %}

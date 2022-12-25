@@ -1,0 +1,98 @@
+{% extends "profileLayout.html" %}
+
+{% block content %}
+<div class="profile-content">
+
+	<h5>Feed Posts</h5>
+	{% if checker.is_self %}
+	<div class="post-topbar">
+		<form action='{% url "index" %}' method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="row">
+				<div class="col-10">
+					{{ form.as_p}}
+					<input class="post_input " name="content" placeholder="  Apa yang ada di pikiranmu?" />
+					<input class="mt-2 " type="file" name="image" />
+
+
+				</div>
+				<div class="col-2">
+					<button class="post btn" type="submit">Post</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	{% endif %}
+
+	{% if posts %}
+	{% for post in posts %}
+	<hr>
+	<div class="card text-center">
+		<div class="card-header">
+			<div class="row" style="text-align:left;">
+				<p class="col-7 tex-left "><span style="color:#FF4500;">Dibuat oleh:</span> {{post.owner}}
+					{% if post.group != null %}
+					<span style="color:#FF4500;"> >> from group:</span> {{post.group }}
+					{% endif %}
+				</p>
+
+				<div class="col-5" style="text-align:right;">
+					<a href="{% url 'view' post.id%}" style="color:grey;" class="mx-3"><i class="fa fa-eye"
+							aria-hidden="true"></i></a>
+					{% if post.owner == request.user %}
+					<a href="{% url 'edit' post.id%}" style="color:grey;" class="mx-3"><i class="fa fa-pen"
+							aria-hidden="true"></i></a>
+					<a href="{% url 'delete' post.id%}" style="color:grey;" class="mx-3"><i class="fa fa-trash"
+							aria-hidden="true"></i></a>
+					{% endif %}
+				</div>
+
+			</div>
+		</div>
+		<div class="card-body">
+			<h5 class="card-text">{{post.content}}</h5>
+			{% if post.image != null and post.image != ""%}
+			<img src="/images/{{post.image }}" width="400px" />
+			{% endif %}
+
+		</div>
+		<div class="card-footer text-muted d-flex">
+			<p style="text-align:left;color:gray;font-size:12px;margin:0px">{{post.created_at}}</p>
+			<div style="text-align:right;width:80%">
+				<a href="{% url 'view' post.id%}" style="color:#FF4500;"><i class="fa fa-comment mx-4 fa-lg "
+						aria-hidden="true"></i></a>
+				<form action="{% url 'like-post' %}" method="POST" style="display: inline-block;">
+					{% csrf_token %}
+					<input type="hidden" name="post_id" value="{{post.id}}">
+
+					{% if request.user not in post.liked.all %}
+					<button type="submit"
+						style="background-color:#FF4500;color:whitesmoke;width: 58px;height: 30px;line-height: 10px;font-size: medium;border-radius: 30px;">Like
+					</button>
+					{% else %}
+					<button type="submit"
+						style="background-color:#e47668;color:whitesmoke;width: 70px;height: 30px;line-height: 10px;font-size: medium;border-radius: 30px;">Unlike
+					</button>
+					{% endif %}
+
+				</form>
+				<strong>{{ post.liked.all.count }} likes</strong>
+			</div>
+		</div>
+	</div>
+
+	<hr>
+
+	{% endfor %}
+	{% elif checker.is_self == True %}
+	<h3>Anda tidak memiliki postingan</h3>
+	<h4>Tambahkan postingan sekarang.</h4>
+
+	{% elif checker.is_friend == False %}
+	<h3>Anda tidak dapat melihat postingan pengguna ini.</h3>
+	<h4>Tambahkan dia sebagai teman.</h4>
+	{% else %}
+	<h3>Pengguna ini belum memposting apa pun.</h3>
+	{% endif %}
+</div>
+{% endblock %}

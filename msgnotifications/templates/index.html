@@ -1,0 +1,109 @@
+{% extends "layout.html"%}
+{% block body %}
+{% load static %}
+
+<div class="container">
+    <div class="row pt-5">
+        <div class="col-sm-8 mycard d-flex flex-column">
+            <div class=" post-topbar">
+
+                <h6>Mengobrol dengan<span style="color:#FF4500;"> :{{ msgto}}</span></h6>
+                <hr>
+                <div style="height:450px;overflow-y:scroll">
+                    {% for message in messages %}
+                    <div class="card text-center">
+                        {% if request.user == message.sender %}
+                        <div class="card-body  bg-light" style="padding-bottom:0px">
+                            <h6 class="card-text" style="text-align:right">{{ message.text}}<span
+                                    style="color:#FF4500;"> :{{ message.sender}}</span></h6>
+                            <p style="text-align:left;color:gray;font-size:12px;margin:0px">{{ message.created_at}}</p>
+
+                        </div>
+
+
+                        {% elif request.user == message.reciever %}
+                        <div class="card-body" style="padding-bottom:0px">
+                            <h6 class="card-text" style="text-align:left;"><span style="color:#FF4500;">
+                                    {{message.sender}}: </span>{{ message.text}}</h6>
+                            <p style="text-align:right;color:gray;font-size:12px;margin:0px">{{ message.created_at}}</p>
+
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card p-2">
+
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="row d-flex justify-content-space-beween">
+                        <div class="col-10">
+                            {{ form.as_p}}
+                            <input style="margin-top: 7px;" class="post_input " name="text"
+                                placeholder="  Enter your message" />
+
+                        </div>
+                        <div class="col-2">
+                            <button class="post btn" style="margin-bottom: 5px;margin-top:7px;"
+                                type="submit">Kirim</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <!---------------------------------------------------- side ------------------------------------------------------------>
+        <div class="col-sm-4 ">
+
+            <div class="mycard">
+                <form action="" method="GET">
+                    <input type="text" name="q" id="" class="post_input " placeholder=" Search for user by name">
+                    <input type="submit" class="btn mt-2" value="Search"></a>
+                </form>
+            </div>
+
+            <div class="mycard" style="height:560px;overflow-y:scroll">
+                <h2>Obrolan</h2>
+                {% for friend in newfriends %}
+                <hr>
+
+                {% if msgto == friend.friendObj.username %}
+                <a href="?id={{ friend.friendObj.id }}" style="color:black;">
+                    <div class="d-flex justify-content-center align-items-center" style="background-color:#f88b7c;"
+                        id="chatdiv">
+                        {% else %}
+                        <a href="?id={{ friend.friendObj.id }}" style="color:black;">
+                            <div class="d-flex justify-content-center align-items-center" id="chatdiv">
+                                {% endif %}
+                                {% if friend.friendCounter != null and friend.friendCounter != 0 %}
+                                <p class="rounded-circle d-inline px-2 py-1"
+                                    style="background-color:white;color:red;font-weight:bold;-webkit-text-stroke: 1px red;">
+                                    {{friend.friendCounter}}</p>
+
+                                {% endif %}
+                                <div class="mx-2 ">{{friend.friendObj.username}}</div>
+                                <img class="  m-1 rounded-circle "
+                                    src="{% if friend.friendObj.userprofile.avatar %}{{friend.friendObj.userprofile.avatar.url}} {% else %} {% static 'images/avatars/profile.jpeg' %} {% endif %}">
+                            </div>
+                        </a>
+
+                        <hr>
+                        {% endfor %}
+
+
+
+
+                    </div>
+
+
+            </div>
+
+
+
+
+        </div>
+
+        {%endblock%}

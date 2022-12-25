@@ -1,0 +1,81 @@
+{% extends "profileLayout.html" %}
+{% block content %}
+<style type="text/css">
+	.profile-image {
+		max-height: 100px;
+		max-width: 100px;
+	}
+
+	.profile-image {
+		border-radius: 12px;
+	}
+
+	.card {
+		border-radius: 12px;
+	}
+
+	.friends-text {
+		color: #000;
+		font-weight: 500;
+	}
+
+	.friends-text-container {
+		border: 1px solid #cccccc;
+		border-radius: 12px;
+	}
+
+	.friends-btn:hover {
+		background-color: #bfbfbf;
+		border-color: #bfbfbf;
+	}
+
+	.dropdown-toggle::after {
+		content: none;
+	}
+
+	.profile-link {
+		color: #000;
+	}
+
+	.checkmark-icon {
+		color: green;
+	}
+
+	.cancel-icon {
+		color: red;
+	}
+</style>
+
+<div class="container">
+	<div>
+		<h2>Teman dari {{user.username}}:</h2>
+		<br>
+		<hr>
+		{% if friends|length > 0 %}
+		{% for friend in friends %}
+		<div class="mycard col-lg-8 d-flex justify-content-center">
+			<a class="profile-link" href="/profile/{{friend.userprofile.user_id}}">
+				<div class="card-image m-2 col-lg-4">
+					<img class="img-fluid profile-image "
+						src="{% if friend.userprofile.avatar %}{{friend.userprofile.avatar.url}} {% else %} /images/avatars/profile.jpeg {% endif %}"
+						alt="">
+					<br>
+					<br>
+					<a class="profile-link" style="display: inline;">
+						<h4 class="card-title">{{friend.username|truncatechars:50}}</h4>
+						<h6>{{friend.first_name}} {{friend.last_name|truncatechars:50}}</h6>
+					</a>
+					<div class="d-flex justify-content-space-beween align-items-center">
+						<a href="/messages/?id={{friend.id}}" class="post btn btn-sm">Mulai Obrolan</a>
+					</div>
+				</div>
+			</a>
+		</div>
+		{% endfor %}
+		{% else %}
+		<h3>Anda tidak punya teman, tambahkan teman terlebih dahulu. </h3>
+		{% endif %}
+
+	</div>
+
+	{% endblock %}

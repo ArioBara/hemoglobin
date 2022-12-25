@@ -1,0 +1,234 @@
+{% extends "layout.html" %}
+
+{% block body %}
+{% load active_link_tags %}
+<div class="container">
+    <div class="row profile">
+        <div class="col-md-3">
+            <div class="alert alert-success" id="accepted" style="display:none;" role="alert">
+                Permintaan dikonfirmasi! Teman ditambahkan.
+            </div>
+            <div class="alert alert-danger" style="display:none;" id="deleted" role="alert">
+                Teman telah dihapus.
+            </div>
+            <div class="alert alert-danger" style="display:none;" id="decline" role="alert">
+                Anda telah menolak permintaan tersebut.
+            </div>
+            <div class="profile-sidebar">
+                <div class="profile-userpic" style="display: flex;justify-content: center;">
+                    {% if checker.is_self == False %}
+                    <img src="{% if account.userprofile.avatar %} {{account.userprofile.avatar.url}} {% else %} /images/avatars/profile.jpeg {% endif %}"
+                        class="img-responsive" alt="">
+                    {% else %}
+                    <img src="{% if user.userprofile.avatar %} {{user.userprofile.avatar.url}} {% else %} /images/avatars/profile.jpeg {% endif %}"
+                        class="img-responsive" alt="">
+                    {% endif %}
+
+                </div>
+                <div class="profile-usertitle">
+                    {% if checker.is_self == False %}
+                    <div class="profile-usertitle-name">
+                        {{account.userprofile.first_name}} {{account.userprofile.last_name}}
+
+                    </div>
+                    {% else %}
+                    <div class="profile-usertitle-name">
+                        {{user.userprofile.first_name}} {{user.userprofile.last_name}}
+
+                    </div>
+                    {% endif %}
+                    <div class="profile-usertitle-job">
+                    </div>
+                </div>
+                <!---------------------------------------------------------------------------------------------------------------------------->
+                <div>
+                    <!-- THEM to YOU -->
+                    {% if checker.request_sent == 0 %}
+                    <div class="card m-2 p-4">
+                        <div class="">
+                            <span id="id_confirm_{{account.id}}" class="confirm-friend-request px-1 m-auto btn post"
+                                onclick='triggerAcceptFriendRequest("{{checker.pending_friend_request_id}}")'><i
+                                    class="fas fa-check-circle "></i> Konfirmasi Permintaan</span>
+
+                            <span id="id_cancel_{{id}}" class="decline-friend-request  my-1 btn post "
+                                onclick='triggerDeclineFriendRequest("{{checker.pending_friend_request_id}}")'><i
+                                    class="fas fa-times-circle "></i> Tolak Permintaan</span>
+
+
+                        </div>
+                    </div>
+                    {% endif %}
+                    <!------------------>
+                    <!-- Cancel Friend Request / Send Friend Request / Remove Friend -->
+                    {% if checker.is_friend == False and checker.is_self == False %}
+                    <!-- You sent them a request -->
+                    {% if checker.request_sent == 1 %}
+                    <div class="profile-userbuttons">
+                        <button class="post btn btn-sm" id="id_cancel_friend_request_btn"><i
+                                class="fas fa-user-plus"></i>
+                            Batalkan Permintaan Pertemanan
+                        </button>
+                    </div>
+                    {% endif %}
+                    <!-- No requests have been sent -->
+                    {% if checker.request_sent == -1 %}
+                    <div class="profile-userbuttons">
+                        <button class="post btn btn-sm" id="id_send_friend_request_btn"><i class="fas fa-user-plus"></i>
+                            Kirim permintaan pertemanan
+                        </button>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+
+                    {% if checker.is_friend %}
+                    <div class="profile-userbuttons d-flex flex-row align-items-center m-auto px-2">
+                        <button class="btn btn-secondary m-auto " id="id_unfriend_btn">Hapus pertemanan</button>
+                    </div>
+                    {% endif %}
+
+                </div>
+                {% if checker.friend_requests  %}
+
+                <!-- Friend requests -->
+                <div class="d-flex flex-row align-items-center m-2 px-4">
+                    <a href="{% url 'friend:friend-requests' user_id=user.id %}">
+                        <div class="d-flex flex-row align-items-center justify-content-center icon-container"><span
+                                class="friend-text btn post"><i class="fas fa-user-plus"></i> Permintaan pertemanan
+                                ({{checker.friend_requests|length}})</span>
+                        </div>
+                    </a>
+                </div>
+
+
+
+                {% endif %}
+                <!------->
+
+                {% if checker.is_friend %}
+                <a href="/messages/?id={{account.id}}">
+
+                    <div class="d-flex flex-row align-items-center justify-content-center icon-container m-auto px-2">
+                        <span class="post btn friend-text "><i class="far fa-envelope"></i> Obrolan</span>
+
+                    </div>
+                </a>
+
+                {% endif %}
+                <!----------------------------------------------------------------------------------------------------------------------------->
+                <div class="profile-usermenu">
+                    <ul style="list-style: none;">
+                        {% if checker.is_self == False %}
+                        <li class="{% active_link 'profile' 'active' strict=True %}">
+                            <a href="/profile/{{account.id}}">
+                                <i class="fas fa-home"></i>
+                                Postingan </a>
+                        </li>
+                        <li class="{% active_link 'about' 'active' strict=True %}">
+                            <a href="/profile/{{account.id}}/about">
+                                <i class="fas fa-user"></i>
+                                Informasi </a>
+                        </li>
+
+
+                        {% else %}
+
+                        <li class="{% active_link 'profile' 'active' strict=True %}">
+                            <a href="/profile/{{user.id}}">
+                                <i class="fas fa-home"></i>
+                                Postingan </a>
+                        </li>
+                        <li class="{% active_link 'about' 'active' strict=True %}">
+                            <a href="/profile/{{user.id}}/about">
+                                <i class="fas fa-user"></i>
+                                Informasi </a>
+                        </li>
+                        <li class="{% active_link 'list' 'active' strict=True %}">
+                            <a href="{% url 'friend:list' %}">
+                                <i class="fa fa-user-friends" aria-hidden="true"></i>
+                                Teman </a>
+                        </li>
+                        <li class="{% active_link 'about' 'active' strict=True %}">
+                            <a href="/profile/{{user.id}}/edit">
+                                <i class="fas fa-pen"></i>
+                                Edit Profil </a>
+                        </li>
+
+                        {% endif %}
+
+                    </ul>
+                </div>
+                <!------------------------------------------------------>
+
+            </div>
+        </div>
+        <div class="col-md-9">
+
+
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function uiReload() {
+        location.reload();
+    }
+    var sendFriendRequestBtn = document.getElementById("id_send_friend_request_btn")
+    if (sendFriendRequestBtn != null) {
+        sendFriendRequestBtn.addEventListener("click", function () {
+            sendFriendRequest("{{account.id}}", uiReload)
+        })
+    }
+    var removeFriendBtn = document.getElementById("id_unfriend_btn")
+    if (removeFriendBtn != null) {
+        removeFriendBtn.addEventListener("click", function () {
+            removeFriend("{{account.id}}", function () {
+                var deletedDiv = document.getElementById("deleted");
+                deletedDiv.style.display = "block";
+                setInterval(() => {
+                    uiReload()
+                }, 1000);
+            })
+        })
+    }
+
+    function triggerAcceptFriendRequest(friend_request_id) {
+        acceptFriendRequest(friend_request_id, function () {
+            var acceptedDiv = document.getElementById("accepted");
+            acceptedDiv.style.display = "block";
+            setInterval(() => {
+                uiReload()
+            }, 1000);
+        })
+    }
+
+    var cancelFriendRequestBtn = document.getElementById("id_cancel_friend_request_btn")
+    if (cancelFriendRequestBtn != null) {
+        cancelFriendRequestBtn.addEventListener("click", function () {
+            cancelFriendRequest("{{account.id}}", uiReload)
+        })
+    }
+
+
+
+    function triggerDeclineFriendRequest(friend_request_id) {
+
+        declineFriendRequest(friend_request_id, function () {
+            var declinedDiv = document.getElementById("decline");
+            declinedDiv.style.display = "block";
+            setInterval(() => {
+                uiReload()
+            }, 1000);
+        })
+    }
+</script>
+
+{% include 'friend/snippets/send_friend_request.html' %}
+{% include 'friend/snippets/decline_friend_request.html' %}
+{% include 'friend/snippets/accept_friend_request.html' %}
+{% include 'friend/snippets/remove_friend.html' %}
+{% include 'friend/snippets/cancel_friend_request.html' %}
+
+
+{% endblock %}

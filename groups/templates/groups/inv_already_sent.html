@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="container" style="padding-top: 30px;">
+    <div class="mycard">
+        <div class="page-wrap d-flex flex-row align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-12 text-center d-flex-column justify-content-center ">
+                        <!-- <span class="display-1 d-block">Unauthorized!</span> -->
+                        <div class="mb-4 lead ">Anda telah mengirim permintaan ke grup ini.</div>
+                        <a href="{% url 'group' %}" style="width: 50%; margin-left: 25%;" class="btn post">Kembali ke
+                            Grup</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

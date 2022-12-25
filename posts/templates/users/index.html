@@ -1,0 +1,45 @@
+{% extends "layout.html"%}
+
+{% block body %}
+<div class="container">
+    <div class="row pt-5">
+        <div class="col-sm-4 ">
+            <div class="mycard">
+                <form action="" method="GET">
+                    <input type="text" name="q" id="" class="post_input " placeholder="Search for user by name"
+                        value="{{query}}">
+                    <input type="submit" class="btn mt-2" value="Search">
+                </form>
+            </div>
+
+        </div>
+        <div class="col-sm-8">
+
+            <div class="mycard">
+                <i class="fa fa-users fa-4x" aria-hidden="true"></i>
+                <h1>Results: </h1>
+                {% if usersResult %}
+                {% for user in usersResult %}
+                <hr>
+                <h5>{{user.userprofile.first_name}} {{user.userprofile.last_name}}</h5>
+                <h6>UserName: {{user.username}}</h6>
+                <div class="d-flex justify-content-space-beween" style="width:100%">
+                    <a class="btn-secondary btn" href="/profile/{{user.id}}"><i class="fas fa-user"></i>Lihat
+                        Profile</a>
+                    <a class="post btn" href="/messages/?id={{ user.id }}"><i class="fas fa-envelope"></i>Kirim
+                        Pesan</a>
+
+                </div>
+                <hr>
+                {% endfor %}
+                {% else %}
+                <h3>There is no results.. </h3>
+                <h2>Search using another name.</h2>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

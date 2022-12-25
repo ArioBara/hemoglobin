@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block body %}
+
+
+
+
+<div class="container">
+	<div class="alert alert-success py-2" style="display:none;" id="success" role="alert">
+		Pengguna Berhasil Ditambahkan!
+	</div>
+	<div class="alert alert-danger py-2" style="display:none;" id="decline" role="alert">
+		Anda telah menolak permintaan tersebut.
+	</div>
+	<div class="card p-2">
+
+		{% if friend_requests %}
+		<div class="d-flex flex-row flex-wrap">
+			{% for request in friend_requests %}
+			<div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
+				<a class="profile-link" href="{% url 'profile' id=request.sender.id %}">
+					<div class="card-image m-2">
+						<img class="img-fluid profile-image"
+							src="{% if request.sender.userprofile.avatar %} {{request.sender.userprofile.avatar.url}}{% else %} {% static 'images/avatars/profile.jpeg' %} {% endif %}">
+					</div>
+				</a>
+				<a class="profile-link" href="{% url 'profile' id=request.sender.id %}">
+					<div class="card-center px-2">
+						<h4 class="card-title">{{request.sender.username}}</h4>
+					</div>
+				</a>
+				<div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
+					<span class="decline-friend-request" onclick='triggerDeclineFriendRequest("{{request.id}}")'><i
+							class="fas fa-times-circle fa-2x"></i></span>
+					<span Fclass="confirm-friend-request" onclick='triggerAcceptFriendRequest("{{request.id}}")'><i
+							class="fas fa-check-circle fa-2x"></i></span>
+				</div>
+			</div>
+			{% if forloop.counter|divisibleby:2 %}
+		</div>
+		<div class="d-flex flex-row flex-wrap">
+			{% endif %}
+
+			{% endfor %}
+
+			{% else %}
+			<!-- If no friends -->
+			<div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
+				<p>Tidak ada hasil</p>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	function uiReload() {
+		location.reload();
+	}
+
+
+
+	function triggerAcceptFriendRequest(friend_request_id) {
+		acceptFriendRequest(friend_request_id, function () {
+			var successDiv = document.getElementById("success");
+			successDiv.style.display = "block";
+			setInterval(() => {
+				uiReload()
+			}, 1000);
+		})
+	}
+
+	function triggerDeclineFriendRequest(friend_request_id) {
+		declineFriendRequest(friend_request_id, function () {
+			var declinedDiv = document.getElementById("decline");
+			declinedDiv.style.display = "block";
+			setInterval(() => {
+				uiReload()
+			}, 1000);
+		})
+	}
+</script>
+{% include 'friend/snippets/accept_friend_request.html' %}
+{% include 'friend/snippets/decline_friend_request.html' %}
+
+{% endblock %}

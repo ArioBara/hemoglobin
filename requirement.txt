@@ -1,0 +1,6 @@
+django==3.1.1
+django-active-link
+django-crispy-forms
+mysqlclient
+inflection
+pillow

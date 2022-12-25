@@ -1,0 +1,22 @@
+{% extends "layout.html"%}
+{% load crispy_forms_tags %}
+
+{% block title %}Comment On Post{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <h4>Tambahkan Komentar Baru</h4>
+    <hr>
+
+    <form action='{% url "add_comment"  post.id%}' method="post">
+        {% csrf_token %}
+        {{ form|crispy}}
+
+        <button class="comment-btn" type="submit">Tambahkan Komentar</button>
+
+    </form>
+
+</div>
+
+{% endblock %}

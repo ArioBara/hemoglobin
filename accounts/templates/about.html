@@ -1,0 +1,127 @@
+{% extends "profileLayout.html" %}
+
+{% block content %}
+<div class="profile-content">
+    {% if checker.is_self == False %}
+    <h2>Informasi tentang {{account.userprofile.first_name}}:</h2>
+    {% else %}
+    <h2>Informasi tentang {{user.userprofile.first_name}}:</h2>
+    {% endif %}
+    <br>
+
+    {% if checker.is_self == False %}
+    <span class="profile-about">Nama Depan: </span>
+    {{account.userprofile.first_name}}
+    {% else %}
+    <span class="profile-about">Nama Depan: </span>
+    {{user.userprofile.first_name}}
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if checker.is_self == False %}
+    <span class="profile-about">Nama Belakang: </span>
+    {{account.userprofile.last_name}}
+    {% else %}
+    <span class="profile-about">Nama Belakang: </span>
+    {{user.userprofile.last_name}}
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if checker.is_self == False %}
+    <span class="profile-about">Tanggal Lahir: </span>
+    {{account.userprofile.birthdate}}
+    {% else %}
+    <span class="profile-about">Tanggal Lahir: </span>
+    {{user.userprofile.birthdate}}
+    {% endif %}
+    <br>
+
+    <br>
+    {% if checker.is_self == False %}
+    <span class="profile-about">Jenis Kelamin: </span>
+    {{account.userprofile.gender}}
+    {% else %}
+    <span class="profile-about">Jenis Kelamin: </span>
+    {{user.userprofile.gender}}
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if checker.is_self == False %}
+    <span class="profile-about">Golongan Darah: </span>
+    {{account.userprofile.blood_group}}
+    {% else %}
+    <span class="profile-about">Golongan Darah: </span>
+    {{user.userprofile.blood_group}}
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if checker.is_self == False %}
+    <span class="profile-about">Tinggi Badan: </span>
+    {{account.userprofile.height}}
+    {% else %}
+    <span class="profile-about">Tinggi Badan: </span>
+    {{user.userprofile.height}}
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if checker.is_self == False %}
+    <span class="profile-about">Berat Badan: </span>
+    {{account.userprofile.weight}}
+    {% else %}
+    <span class="profile-about">Berat Badan: </span>
+    {{user.userprofile.weight}}
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if checker.is_self == False %}
+    <span class="profile-about">Riwayat Penyakit: </span>
+    {{account.userprofile.disease_history}}
+    {% else %}
+    <span class="profile-about">Riwayat Penyakit: </span>
+    {{user.userprofile.disease_history}}
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if checker.is_self == False %}
+    <span class="profile-about">Alamat: </span>
+    {{account.userprofile.address}}
+    {% else %}
+    <span class="profile-about">Alamat: </span>
+    {{user.userprofile.address}}
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if checker.is_self == False %}
+    <span class="profile-about">Nomer Telepon: </span>
+    {{account.userprofile.phone_number}}
+    {% else %}
+    <span class="profile-about">Nomer Telepon: </span>
+    {{user.userprofile.phone_number}}
+    {% endif %}
+
+    <br>
+    <br>
+
+    <br><br>
+    <hr>
+    <h4 class="profile-about">Deskripsi: </h4>
+    {{user.userprofile.about}}
+
+</div>
+{% endblock %}

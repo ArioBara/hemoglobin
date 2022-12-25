@@ -1,0 +1,74 @@
+{% extends "layout.html"%}
+
+{% block body %}
+<div class="container">
+
+    <div style="margin-bottom: 50px;margin-top: 20px;border-radius: 20px;border: 2px solid #FF4500;padding: 40px;">
+
+        <strong>
+            <h5 style="display: inline-block;font-size: 20px;">{{post.owner}}</h5>
+        </strong> -{{post.created_at}}
+        <div style="width: 300px;height: 2px;background-color: #FF4500;"></div>
+        <div class="row">
+            <div class="col-6">
+                <p style="margin-top: 20px;">{{post.content}}</p>
+            </div>
+            <div class="col-6">
+                {% if post.image != null and  post.image != ""%}
+                <img src="/images/{{post.image }}" width="400px" />
+                {% endif %}
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    <hr>
+    {% if  post.liked.all.count > 0 %}
+    <div style="color: #FF4500;display: inline-block;margin-right: 20px;"><strong> suka : </strong></div>
+    {{ post.liked.all.count }} likes from :
+    {% for user in post.liked.all %}
+    {% if forloop.last %}
+    <span style="color: #FF4500;">{{ user.username }}</span>
+    {% else %}
+    <span style="color: #FF4500;">{{ user.username }}</span><span> and </span>
+    {% endif %}
+    {% endfor %}
+
+    {% else %}
+    <div style="color: #FF4500;display: inline-block;margin-right: 20px;"><strong> suka : </strong></div>
+    {{ post.liked.all.count }} likes
+    {% endif %}
+    <br>
+    <hr>
+    <h4>Comments</h4>
+    <div style="margin-bottom: 50px;">
+        <div class="comments"></div>
+        {% if not post.comments.all %}
+        <br>
+        tidak ada komentar .... <a href="{% url 'add_comment' post.pk %}"
+            class="add-comment"><strong>tambah</strong></a>
+        {% else %}
+        <br>
+        <a href="{% url 'add_comment' post.pk %}" class="add-comment"><strong>tambah komentar</strong></a>
+        <br>
+        <br>
+        {% for comment in post.comments.all %}
+        <strong> {{comment.owner}} -- {{comment.created_at}} </strong>
+        <br>
+        {{comment.content}}
+        <br><br>
+        {% if request.user == comment.owner %}
+        <a href="{% url 'del_comment' comment.id %}" class="add-comment">hapus</a>
+        {% endif %}
+        <hr>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+
+
+</div>
+{% endblock %}
