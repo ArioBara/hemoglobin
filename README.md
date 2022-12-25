@@ -1,6 +1,6 @@
 # hemoglobin
 # CARA PAKAI:
-<P> git clone https://github.com/ArioBara/hemoglobin.git </P>
+git clone https://github.com/ArioBara/hemoglobin.git
 
 cd hemoglobin
 
